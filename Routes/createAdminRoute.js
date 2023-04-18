@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
@@ -25,22 +25,27 @@ app.get("/", async (req, res) => {
 
 app.post("/createAdmin",authentication, async (req, res) => {
     const {name,email,password,phone,web}=req.body
-    const user=await AdminModel.findOne({email})
+    
    
     try{
-      if(user){
-        res.send("councellor is not present").status(400)
+      const user=await AdminModel.findOne({email})
+      if (!user) {
+        res.status(401).send("Invalid email or password");
+        return;
       }
-      else{
-        bcrypt.hash(password, saltRounds, async(err, hash)=> {
-          const counsellor=new AdminModel({name,email,password:hash,phone,web})
-          await counsellor.save()
-          res.send("counseller is created").status(200)
+
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (result === true) {
+          // password is correct, generate JWT token and send it to client
+          const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+          res.status(200).json({ token });
+        } else {
+          // password is incorrect
+          res.status(401).send("Invalid email or password");
+        }
       });
-      }
-    }
-    catch(err){
-      res.send("Invalid User").status(500)
+    } catch (err) {
+      res.status(500).send("Server error");
     }
     
 });

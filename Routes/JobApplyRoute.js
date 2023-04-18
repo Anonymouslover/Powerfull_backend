@@ -180,10 +180,11 @@ app.patch("/notes/update/:id",async(req,res)=>{
 console.log(req.body,180)
 console.log(req.file,181)
     const { notetype,notesdes } = req.body
+    const notesupdatetime = new Date();
  
     try{
        
-            const  newcountry=await jobapplyModel.findByIdAndUpdate(id,{ $push: { notetype:notetype, notesdes:notesdes } },{new:true})
+            const  newcountry=await jobapplyModel.findByIdAndUpdate(id,{ $push: { notetype:notetype, notesdes:notesdes,notesupdatetime:notesupdatetime } },{new:true})
             console.log(newcountry,145)
             res.send("job is updated")
             // console.log(newcountry,139)
@@ -242,6 +243,49 @@ console.log(id,226);
   
 })
 
+
+app.patch("/status/update/:id",async(req,res)=>{
+    const id=req.params.id
+
+    const { status } = req.body
+
+ 
+    try{
+       
+            const  newcountry=await jobapplyModel.findOneAndUpdate({"candidateid":id},{status:status},{new:true})
+            console.log(newcountry,145)
+            res.send("job is updated")
+            // console.log(newcountry,139)
+        
+     
+    }
+    catch(err){
+      res.send("job is not changed" + err)
+    }
+  
+})
+
+
+app.patch("/interview/update/:id",async(req,res)=>{
+    const id=req.params.id
+  
+    const { interviewerName ,interviewers,from,to,scheduleComments} = req.body
+
+ 
+    try{
+       
+            const  newcountry=await jobapplyModel.findOneAndUpdate({"candidateid":id},{interviewerName:interviewerName,interviewers:interviewers,from:from,to:to,scheduleComments:scheduleComments},{new:true})
+            console.log(newcountry,145)
+            res.send("Interview is updated")
+            // console.log(newcountry,139)
+        
+     
+    }
+    catch(err){
+      res.send("Interview is not changed" + err)
+    }
+  
+})
 
 app.delete("/delete/:id",async(req,res)=>{
     const id=req.params.id

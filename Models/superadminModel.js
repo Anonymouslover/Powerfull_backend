@@ -4,7 +4,7 @@ const superadminSchema=mongoose.Schema({
     name:{type:String,required:false},
     email:{type:String,required:true},
     password:{type:String,required:true},
-    role:{type:String,default:"superadmin"},
+    role:{type:String,default:"admin"},
     userId:{type:String,required:false},
 },
 {timestamp:true})

@@ -1,14 +1,19 @@
 const express=require("express")
+require('dotenv').config()
 
 const path=require("path")
 const app=express()
-const port = 8080 || process.env.PORT
+
+const port = 5000 || process.env.PORT
+
 
 const cors = require("cors")
-
+const cookieParser = require("cookie-parser");
 const connection=require("./config/db")
 
-app.use(cors())
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: process.env.CLIENT_HOST }));
 
 
 app.use(express.static(path.join(__dirname)));
@@ -16,8 +21,10 @@ app.use(express.static(path.join(__dirname)));
 
 
 const loginRoute=require("./Routes/Login")
-const superadminRoute=require("./Routes/SuperAdminRoute")
+const signupRoute = require("./Routes/Signup")
 const adminRoute=require("./Routes/createAdminRoute")
+const User = require("./Routes/User");
+
 const jobposting = require('./Routes/JobPostingRoute')
 const jobapply  = require('./Routes/JobApplyRoute')
 const departmentsetting = require('./Routes/Setting/DepartmentRoute')
@@ -30,71 +37,41 @@ const interviewnamesetting = require('./Routes/Setting/InterviewNameRoute')
 
 const processsetting = require('./Routes/Setting/ProcessRoute')
 const countrysetting = require('./Routes/Setting/CountryRoute')
-const { create } = require("./Models/jobapplyModel")
-// const superRouter=require("./Routes/superadminRoute")
-
-// const adduserRouter=require("./Routes/adduserRoute")
-
-// const modeofdeliveryRouter=require("./Routes/Modeofdelivery")
-
-// const mastercourseRouter=require("./Routes/MasterCourseRoute")
-
-// const masterQualificationRoute=require("./Routes/QualificationRoute")
-
-// const masterOrganistionRoute=require("./Routes/masterOrganistationRoute")
-
-// const masterTaxRoute=require("./Routes/masterTaxRoute")
-
-// const masterDesignationRoute=require("./Routes/masterDesignationRoute")
-
-// const masterCountryRoute=require("./Routes/masterCountryRoute")
-
-// const masterStateRoute=require("./Routes/masterStateRoute")
-
-// const masterFollowupRoute=require("./Routes/masterFollowupRoute")
-
-// app.use("/superadmin",superRouter)
-
-// app.use("/adduser",adduserRouter)
-
-// app.use("/modeofdelivery",modeofdeliveryRouter)
-
-// app.use("/mastercourse",mastercourseRouter)
-
-// app.use("/masterqualification",masterQualificationRoute)
-
-// app.use("/masterorganisation",masterOrganistionRoute)
-
-// app.use("/mastertaxroute",masterTaxRoute)
-
-// app.use("/masterdesignation",masterDesignationRoute)
-
-// app.use("/mastercountry",masterCountryRoute)
-
-// app.use("/masterstate",masterStateRoute)
-
-// app.use("/masterfollowup",masterFollowupRoute)
 
 
-app.use("/jobcard",jobposting)
-app.use("/jobapply",jobapply)
-app.use("/setting",departmentsetting)
-app.use("/setting/Recruit",recruitsetting)
-app.use("/setting/industry",industrysetting)
-app.use("/setting/skillset",skillsetsetting)
-app.use("/setting/hiring",hiringsetting)
-app.use("/setting/interview",interviewsetting)
-app.use("/setting/interviewname",interviewnamesetting)
 
-app.use("/setting/process",processsetting)
-app.use("/setting/country",countrysetting)
-app.use("/superadmin",superadminRoute)
-app.use("/admin",adminRoute)
-app.use("/login",loginRoute)
 
-app.get("/",(req,res)=>{
+app.use("/api/jobcard",jobposting)
+app.use("/api/jobapply",jobapply)
+app.use("/api/setting",departmentsetting)
+app.use("/api/setting/Recruit",recruitsetting)
+app.use("/api/setting/industry",industrysetting)
+app.use("/api/setting/skillset",skillsetsetting)
+app.use("/api/setting/hiring",hiringsetting)
+app.use("/api/setting/interview",interviewsetting)
+app.use("/api/setting/interviewname",interviewnamesetting)
+
+app.use("/api/setting/process",processsetting)
+app.use("/api/setting/country",countrysetting)
+
+app.use("/api/admin",adminRoute)
+app.use("/api/login",loginRoute)
+app.use("/api/signup",signupRoute)
+app.use("/api/user",User)
+
+app.get("/api/",(req,res)=>{
     res.send("hello")
 })
+
+
+var __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/build')));
+
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/build/index.html'))
+);
+
+
 
 app.listen(port,async()=>{
     try {

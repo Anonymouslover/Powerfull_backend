@@ -23,11 +23,16 @@ const jobapplySchema=mongoose.Schema({
     status:{type:String,default:"In-Process"},
     notetype:[{type:String,required:false}],
     notesdes:[{type:String,required:false}],
+    notesupdatetime:[{type:String,required:false}],
     filename:[{type:String,required:false}],
     fileupload:[{type:String,required:false}],
     starrating:{type:String,required:false},
     ratingcomment:{type:String,required:false},
-
+    interviewerName:{type:String,required:false},
+    interviewers:{type:String,required:false},
+    from:{type:String,required:false},
+    to:{type:String,required:false},
+    scheduleComments:{type:String,required:false},
 },
 {timestamps:true}
 )

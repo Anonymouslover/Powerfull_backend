@@ -1,0 +1,19 @@
+const mongoose=require("mongoose")
+
+const skillsetsettingSchema=mongoose.Schema({
+ 
+    // departmentname:{type:String,required:false},
+    // recruitername:{type:String,required:false},
+    // industry:{type:String,required:false},
+    skillset:{type:String,required:false},
+    // email:{type:String,required:false},
+    // password:{type:String,required:false},
+    // hiring:{type:String,required:false},
+    // hiring:{type:String,required:false},
+    
+
+})
+
+const skillsetModel=mongoose.model("skillsetsetting",skillsetsettingSchema)
+
+module.exports=skillsetModel

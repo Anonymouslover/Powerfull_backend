@@ -2,10 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Hello This Is Backend",
+  "proxy": "http://localhost:5000",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "backend": "nodemon index",
+    "backend": "nodemon src/index",
     "start": "npm run backend"
   },
   "author": "rakesh",
@@ -16,11 +17,14 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
     "multer": "^1.4.5-lts.1",
+    "node-global-proxy": "^1.0.1",
     "path": "^0.12.7",
     "universal-cookie": "^4.0.4",
     "uuid": "^9.0.0"
-  }
+  },
+  "homepage": "."
 }

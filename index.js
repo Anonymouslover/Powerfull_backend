@@ -1,5 +1,8 @@
 const express=require("express")
 require('dotenv').config()
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+
 
 const path=require("path")
 const app=express()
@@ -9,7 +12,7 @@ const port = 5000 || process.env.PORT
 
 const cors = require("cors")
 const cookieParser = require("cookie-parser");
-const connection=require("./config/db")
+const connection=require("./src/config/db")
 
 app.use(express.json());
 app.use(cookieParser());
@@ -20,23 +23,23 @@ app.use(express.static(path.join(__dirname)));
 
 
 
-const loginRoute=require("./Routes/Login")
-const signupRoute = require("./Routes/Signup")
-const adminRoute=require("./Routes/createAdminRoute")
-const User = require("./Routes/User");
+const loginRoute=require("./src/Routes/Login")
+const signupRoute = require("./src/Routes/Signup")
+const adminRoute=require("./src/Routes/createAdminRoute")
+const User = require("./src/Routes/User");
 
-const jobposting = require('./Routes/JobPostingRoute')
-const jobapply  = require('./Routes/JobApplyRoute')
-const departmentsetting = require('./Routes/Setting/DepartmentRoute')
-const recruitsetting = require('./Routes/Setting/RecruitRoute')
-const industrysetting = require('./Routes/Setting/IndustryRoute')
-const skillsetsetting = require('./Routes/Setting/SkillsetRoute')
-const hiringsetting = require('./Routes/Setting/HiringRoute')   
-const interviewsetting = require('./Routes/Setting/InterviewRoute')
-const interviewnamesetting = require('./Routes/Setting/InterviewNameRoute')
+const jobposting = require('./src/Routes/JobPostingRoute')
+const jobapply  = require('./src/Routes/JobApplyRoute')
+const departmentsetting = require('./src/Routes/Setting/DepartmentRoute')
+const recruitsetting = require('./src/Routes/Setting/RecruitRoute')
+const industrysetting = require('./src/Routes/Setting/IndustryRoute')
+const skillsetsetting = require('./src/Routes/Setting/SkillsetRoute')
+const hiringsetting = require('./src/Routes/Setting/HiringRoute')   
+const interviewsetting = require('./src/Routes/Setting/InterviewRoute')
+const interviewnamesetting = require('./src/Routes/Setting/InterviewNameRoute')
 
-const processsetting = require('./Routes/Setting/ProcessRoute')
-const countrysetting = require('./Routes/Setting/CountryRoute')
+const processsetting = require('./src/Routes/Setting/ProcessRoute')
+const countrysetting = require('./src/Routes/Setting/CountryRoute')
 
 
 
@@ -64,12 +67,14 @@ app.get("/api/",(req,res)=>{
 })
 
 
-var __dirname = path.resolve();
+
+// Serve static files from the build directory
 app.use(express.static(path.join(__dirname, '/build')));
 
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, '/build/index.html'))
-);
+// Serve index.html for all routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/build/index.html'));
+});
 
 
 
